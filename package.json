@@ -1,6 +1,6 @@
 {
   "name": "astro-uploader",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A uploader for uploading the Astro generated files through the S3 API.",
   "keywords": [
     "Astro",
