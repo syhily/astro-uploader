@@ -2,28 +2,29 @@
   "name": "astro-uploader",
   "version": "1.0.0",
   "description": "A uploader for uploading the Astro generated files through the S3 API.",
-  "author": "Yufan Sheng <syhily@gmail.com>",
-  "license": "MIT",
-  "main": "./dist/index.mjs",
+  "keywords": [
+    "Astro",
+    "S3",
+    "withastro"
+  ],
+  "bugs": {
+    "url": "https://github.com/syhily/astro-uploader/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/syhily/astro-uploader"
   },
-  "bugs": {
-    "url": "https://github.com/syhily/astro-uploader/issues"
-  },
-  "keywords": [
-    "Astro",
-    "S3"
-  ],
-  "type": "module",
+  "license": "MIT",
+  "author": "Yufan Sheng <syhily@gmail.com>",
   "sideEffects": false,
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
       "default": "./dist/index.mjs"
     }
   },
+  "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
   "files": [
@@ -33,6 +34,16 @@
     "build": "unbuild",
     "stub": "unbuild --stub"
   },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.600.0",
+    "mime": "^4.0.3",
+    "rimraf": "^5.0.7"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.9",
+    "astro": "^4.11.3",
+    "unbuild": "^2.0.0"
+  },
   "peerDependencies": {
     "vite": "^2.9.0 || ^3.0.0-0 || ^4.0.0 || ^5.0.0-0"
   },
@@ -40,15 +51,5 @@
     "vite": {
       "optional": true
     }
-  },
-  "devDependencies": {
-    "@types/node": "^20.14.9",
-    "astro": "^4.11.3",
-    "unbuild": "^2.0.0"
-  },
-  "dependencies": {
-    "@aws-sdk/client-s3": "^3.600.0",
-    "mime": "^4.0.3",
-    "rimraf": "^5.0.7"
   }
 }
