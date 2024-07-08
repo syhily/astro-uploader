@@ -34,6 +34,19 @@ export default defineConfig({
 })
 ```
 
+### Vite Dependency Optimization
+
+If you have issues like '' in using this tool. Remember to change your Astro configuration for add the code shown below.
+
+```ts
+export default defineConfig({
+  vite: {
+    // Add this for avoiding the needless import optimize in Vite.
+    optimizeDeps: { exclude: ['opendal'] },
+  },
+});
+```
+
 ## Options
 
 ```ts
