@@ -99,14 +99,11 @@ class Uploader {
     const exist = await this.operator.isExist(key);
     if (exist) {
       const { contentLength } = await this.operator.stat(key);
-      if (contentLength !== null && contentLength !== BigInt(size)) {
-        if (this.override) {
-          await this.operator.delete(key);
-          return false;
-        }
-
-        return true;
+      if ((contentLength !== null && contentLength !== BigInt(size)) || this.override) {
+        await this.operator.delete(key);
+        return false;
       }
+      return true;
     }
 
     return false;
