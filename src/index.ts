@@ -97,12 +97,12 @@ class Uploader {
 
   async isExist(key: string, size: number): Promise<boolean> {
     try {
-      const { contentLength, isFile } = await this.operator.stat(key);
+      const { contentLength } = await this.operator.stat(key);
       if ((contentLength !== null && contentLength !== BigInt(size)) || this.override) {
         await this.operator.delete(key);
         return false;
       }
-      return isFile();
+      return true;
     } catch (err) {
       // Just ignore the error for now. If we find better solution for how to handle the opendal error.
       if (err instanceof Error) {
