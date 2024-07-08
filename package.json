@@ -1,8 +1,8 @@
 {
   "name": "astro-uploader",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "A uploader for uploading the Astro generated files through the S3 API.",
-  "keywords": ["Astro", "S3", "withastro"],
+  "keywords": ["Astro", "S3", "withastro", "opendal"],
   "bugs": {
     "url": "https://github.com/syhily/astro-uploader/issues"
   },
