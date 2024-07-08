@@ -38,7 +38,7 @@ const S3Options = z
     region: z.string().min(1).default('auto'),
     endpoint: z.string().url().optional(),
     bucket: z.string().min(1),
-    root: z.string().default('/'),
+    root: z.string().default(''),
     accessKey: z.string().min(1),
     secretAccessKey: z.string().min(1),
     extraOptions: z.record(z.string(), z.string()).default({}),
@@ -93,10 +93,6 @@ class Uploader {
   constructor(operator: Operator, override: boolean) {
     this.operator = operator;
     this.override = override;
-  }
-
-  private async delete(key: string): Promise<void> {
-    await this.operator.delete(key);
   }
 
   async isExist(key: string, size: number): Promise<boolean> {

@@ -2,11 +2,7 @@
   "name": "astro-uploader",
   "version": "1.0.1",
   "description": "A uploader for uploading the Astro generated files through the S3 API.",
-  "keywords": [
-    "Astro",
-    "S3",
-    "withastro"
-  ],
+  "keywords": ["Astro", "S3", "withastro"],
   "bugs": {
     "url": "https://github.com/syhily/astro-uploader/issues"
   },
@@ -27,12 +23,10 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "files": [
-    "dist"
-  ],
+  "files": ["dist"],
   "scripts": {
     "build": "unbuild",
-    "format": "biome format src --write",
+    "format": "biome format . --write",
     "stub": "unbuild --stub"
   },
   "dependencies": {
