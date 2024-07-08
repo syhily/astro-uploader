@@ -32,24 +32,18 @@
   ],
   "scripts": {
     "build": "unbuild",
+    "format": "biome format src --write",
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.600.0",
-    "mime": "^4.0.3",
-    "rimraf": "^5.0.7"
+    "mime": "^4.0.4",
+    "opendal": "^0.47.0",
+    "rimraf": "^5.0.8"
   },
   "devDependencies": {
-    "@types/node": "^20.14.9",
-    "astro": "^4.11.3",
+    "@biomejs/biome": "^1.8.3",
+    "@types/node": "^20.14.10",
+    "astro": "^4.11.5",
     "unbuild": "^2.0.0"
-  },
-  "peerDependencies": {
-    "vite": "^2.9.0 || ^3.0.0-0 || ^4.0.0 || ^5.0.0-0"
-  },
-  "peerDependenciesMeta": {
-    "vite": {
-      "optional": true
-    }
   }
 }

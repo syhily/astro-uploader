@@ -1,6 +1,7 @@
 # Astro Uploader
 
 A uploader for uploading the Astro generated files through the S3 API.
+This uploader is based on the [Apache OpenDAL™](https://github.com/apache/opendal). If you have any issues in uploading, it could be the issues in OpenDAL, remember to upgrade the OpenDAL to the latest version.
 
 ## Installation
 
@@ -56,5 +57,7 @@ type Options = {
   accessKey: string;
   // The secret access key.
   secretAccessKey: string;
+  // All the methods in https://docs.rs/opendal/latest/opendal/services/struct.S3.html#implementations can be treated as an extra option.
+  extraOptions?: Record<string, string>
 };
 ```
