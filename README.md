@@ -50,9 +50,25 @@ export default defineConfig({
 ## Options
 
 ```ts
+type Path = {
+  // The directory in the astro static build that you want to upload to S3.
+  path: string;
+  // Whether to upload the files that locates in the inner directory.
+  recursive?: boolean;
+  // Whether to keep the original files after uploading.
+  keep?: boolean;
+  // Whether to override the existing files on S3.
+  // It will be override only when the content-length don't match the file size by default.
+  override?: boolean;
+};
+
 type Options = {
-  // The directories that you want to upload to S3.
-  paths: string[];
+  // Enable the uploader
+  enable?: boolean;
+  // The directory in the astro static build that you want to upload to S3.
+  paths: Array<string | Path>;
+  // Whether to upload the files that locates in the inner directory.
+  recursive?: boolean;
   // Whether to keep the original files after uploading.
   keep?: boolean;
   // Whether to override the existing files on S3.
@@ -64,13 +80,13 @@ type Options = {
   endpoint?: string;
   // The name of the bucket.
   bucket: string;
-  // The root directory you want to upload files.
+  // The root directory in S3 service that you want to upload files.
   root?: string;
   // The access key id.
   accessKey: string;
   // The secret access key.
   secretAccessKey: string;
   // All the methods in https://docs.rs/opendal/latest/opendal/services/struct.S3.html#implementations can be treated as an extra option.
-  extraOptions?: Record<string, string>
+  extraOptions?: Record<string, string>;
 };
 ```
