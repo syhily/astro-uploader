@@ -217,9 +217,9 @@ const uploadFile = async (
     keep: boolean;
     override: boolean;
   },
-  root: string,
+  buildPath: string,
 ) => {
-  const filePath = current.path;
+  const filePath = path.join(buildPath, current.path);
   const fileStats = fs.statSync(filePath);
   const isFile = !fileStats.isDirectory();
   const uploadAction = async (key: string) => {
@@ -229,7 +229,7 @@ const uploadFile = async (
   };
 
   if (isFile) {
-    const key = normalizePath(path.join(root, current.path));
+    const key = normalizePath(current.path);
     if (await uploader.isExist(key, fileStats.size, current.override)) {
       logger.info(`${key} exists on backend, skip.`);
     } else {
@@ -248,7 +248,7 @@ const uploadFile = async (
 
       const nextFilePath = path.join(current.path, next);
       if (current.recursive || !fs.statSync(nextFilePath).isDirectory()) {
-        await uploadFile(uploader, logger, { ...current, path: nextFilePath }, root);
+        await uploadFile(uploader, logger, { ...current, path: nextFilePath }, buildPath);
       }
     }
   }
