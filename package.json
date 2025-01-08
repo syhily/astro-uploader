@@ -30,14 +30,14 @@
     "stub": "unbuild --stub"
   },
   "dependencies": {
-    "mime": "^4.0.4",
+    "mime": "^4.0.6",
     "opendal": "^0.47.7",
     "rimraf": "^6.0.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
-    "@types/node": "^22.10.1",
-    "astro": "^4.16.16",
-    "unbuild": "^2.0.0"
+    "@types/node": "^22.10.5",
+    "astro": "^5.1.3",
+    "unbuild": "^3.2.0"
   }
 }
