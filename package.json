@@ -1,6 +1,6 @@
 {
   "name": "astro-uploader",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A uploader for uploading the Astro generated files through the S3 API.",
   "keywords": [
     "Astro",
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "mime": "^4.0.7",
-    "opendal": "^0.48.3",
+    "opendal": "^0.47.11",
     "rimraf": "^6.0.1"
   },
   "devDependencies": {
