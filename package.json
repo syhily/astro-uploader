@@ -1,54 +1,55 @@
 {
   "name": "astro-uploader",
-  "version": "1.2.5",
-  "description": "A uploader for uploading the Astro generated files through the S3 API.",
-  "keywords": [
-    "Astro",
-    "S3",
-    "withastro",
-    "opendal"
-  ],
-  "bugs": {
-    "url": "https://github.com/syhily/astro-uploader/issues"
-  },
+  "type": "module",
+  "version": "1.3.0",
+  "description": "A uploader for uploading the Astro generated files and other static files through the S3 API.",
+  "author": "Yufan Sheng <syhily@gmail.com>",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/syhily/astro-uploader"
   },
-  "license": "MIT",
-  "author": "Yufan Sheng <syhily@gmail.com>",
-  "sideEffects": false,
-  "type": "module",
+  "bugs": {
+    "url": "https://github.com/syhily/astro-uploader/issues"
+  },
+  "keywords": [
+    "astro",
+    "astro-component",
+    "opendal",
+    "s3",
+    "withastro"
+  ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.mts",
-      "default": "./dist/index.mjs"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
     }
   },
-  "main": "./dist/index.mjs",
-  "module": "./dist/index.mjs",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "unbuild",
-    "lint": "biome check --write . && prettier . --write",
-    "stub": "unbuild --stub"
+    "build": "tsup-node",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix"
+  },
+  "peerDependencies": {
+    "astro": "^5"
   },
   "dependencies": {
-    "mime": "^4.0.7",
-    "opendal": "^0.47.11",
-    "rimraf": "^6.0.1"
+    "@aws-sdk/client-s3": "^3.848.0",
+    "mime": "^4.0.7"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.1.0",
-    "@types/node": "^24.0.10",
-    "astro": "^5.11.0",
-    "prettier": "^3.6.2",
-    "prettier-plugin-astro": "^0.14.1",
-    "prettier-plugin-astro-organize-imports": "^0.4.11",
-    "prettier-plugin-organize-imports": "^4.1.0",
-    "unbuild": "^3.5.0"
+    "@antfu/eslint-config": "^4.17.0",
+    "@types/node": "^24.0.15",
+    "astro": "^5.12.0",
+    "eslint": "^9.31.0",
+    "tsup": "^8.5.0",
+    "typescript": "^5.8.3"
   }
 }

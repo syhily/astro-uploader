@@ -1,7 +1,6 @@
 # Astro Uploader
 
 A uploader for uploading the Astro generated files through the S3 API.
-This uploader is based on the [Apache OpenDAL™](https://github.com/apache/opendal). If you have any issues in uploading, it could be the issues in OpenDAL, remember to upgrade the OpenDAL to the latest version.
 
 ## Installation
 
@@ -18,75 +17,33 @@ yarn add -D astro-uploader
 
 ```ts
 // astro.config.ts
+import process from 'node:process'
+import { uploader } from 'astro-uploader'
 import { defineConfig } from 'astro/config'
-import { uploader, type Options } from 'astro-uploader'
+import { loadEnv } from 'vite'
+
+const {
+  UPLOAD_ASSETS,
+  S3_ENDPOINT,
+  S3_BUCKET,
+  S3_ACCESS_KEY,
+  S3_SECRET_ACCESS_KEY,
+} = loadEnv(process.env.NODE_ENV!, process.cwd(), '')
 
 export default defineConfig({
   integrations: [
     uploader({
-      paths: ['images', 'og', 'cats'],
-      endpoint: process.env.S3_ENDPOINT,
-      bucket: process.env.S3_BUCKET as string,
-      accessKey: process.env.S3_ACCESS_KEY as string,
-      secretAccessKey: process.env.S3_SECRET_ACCESS_KEY as string,
+      enable: UPLOAD_ASSETS !== 'false',
+      paths: ['images', 'assets'],
+      endpoint: S3_ENDPOINT,
+      bucket: S3_BUCKET,
+      accessKey: S3_ACCESS_KEY,
+      secretAccessKey: S3_SECRET_ACCESS_KEY,
     }),
   ],
 })
 ```
 
-### Vite Dependency Optimization
-
-If you have issues like '' in using this tool. Remember to change your Astro configuration for add the code shown below.
-
-```ts
-export default defineConfig({
-  vite: {
-    // Add this for avoiding the needless import optimize in Vite.
-    optimizeDeps: { exclude: ['opendal'] },
-  },
-});
-```
-
 ## Options
 
-```ts
-type Path = {
-  // The directory in the astro static build that you want to upload to S3.
-  path: string;
-  // Whether to upload the files that locates in the inner directory.
-  recursive?: boolean;
-  // Whether to keep the original files after uploading.
-  keep?: boolean;
-  // Whether to override the existing files on S3.
-  // It will be override only when the content-length don't match the file size by default.
-  override?: boolean;
-};
-
-type Options = {
-  // Enable the uploader
-  enable?: boolean;
-  // The directory in the astro static build that you want to upload to S3.
-  paths: Array<string | Path>;
-  // Whether to upload the files that locates in the inner directory.
-  recursive?: boolean;
-  // Whether to keep the original files after uploading.
-  keep?: boolean;
-  // Whether to override the existing files on S3.
-  // It will be override only when the content-length don't match the file size by default.
-  override?: boolean;
-  // The S3 region, set it if you use AWS S3 service.
-  region?: string;
-  // The endpoint, set it if you use 3rd-party S3 service.
-  endpoint?: string;
-  // The name of the bucket.
-  bucket: string;
-  // The root directory in S3 service that you want to upload files.
-  root?: string;
-  // The access key id.
-  accessKey: string;
-  // The secret access key.
-  secretAccessKey: string;
-  // All the methods in https://docs.rs/opendal/latest/opendal/services/struct.S3.html#implementations can be treated as an extra option.
-  extraOptions?: Record<string, string>;
-};
-```
+See the [types.ts](src/types.ts) file on how to config this plugin.
