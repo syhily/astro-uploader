@@ -18,7 +18,7 @@ yarn add -D astro-uploader
 ```ts
 // astro.config.ts
 import process from 'node:process'
-import { uploader } from 'astro-uploader'
+import uploader from 'astro-uploader'
 import { defineConfig } from 'astro/config'
 import { loadEnv } from 'vite'
 

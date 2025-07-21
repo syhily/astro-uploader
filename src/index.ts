@@ -1,3 +1,3 @@
-import * as uploader from '@/uploader'
+import uploader from '@/uploader'
 
 export default uploader
