@@ -116,17 +116,16 @@ async function uploadFiles({
 
         // Find the files to upload.
         await Promise.all(results
-          .filter(async (result) => {
+          .map(async (result) => {
             const object = objects.get(result.targetPath)
             if (object !== undefined) {
               const meta = await stat(result.sourcePath)
               if (meta.size === object.Size) {
-                return false
+                logger.info(`The file exists on target. Skip to upload file: ${result.targetPath}`)
+                return
               }
             }
-            return true
-          })
-          .map(async (result) => {
+
             logger.info(`The file doesn't exist on target. Start to upload file: ${result.targetPath}`)
             const contentType = mime.getType(result.targetPath)
             const putCmd = new PutObjectCommand({
