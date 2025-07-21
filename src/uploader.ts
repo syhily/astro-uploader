@@ -3,7 +3,7 @@ import type { AwsCredentialIdentity } from '@smithy/types'
 import type { AstroIntegration, AstroIntegrationLogger } from 'astro'
 import type { Options } from '@/types'
 import { readFile, rm, stat, unlink } from 'node:fs/promises'
-import { join, resolve } from 'node:path'
+import { join, relative, resolve } from 'node:path'
 import { HeadBucketCommand, ListObjectsV2Command, NoSuchBucket, PutObjectCommand, S3Client } from '@aws-sdk/client-s3'
 import mime from 'mime'
 import { normalizePath } from 'vite'
@@ -148,7 +148,7 @@ async function uploadFiles({
     if (!keep) {
       try {
         // Given this is a dangerous operation. We do not allowed the user to use ".." directory.
-        await rm(resolve(join(rootPath, filePath)), { recursive: true, force: true })
+        await rm(resolve(rootPath, filePath), { recursive: true, force: true })
       }
       catch (err) {
         logger.error(`Failed to remove the ${filePath}.`)
@@ -156,6 +156,13 @@ async function uploadFiles({
       }
     }
   }
+}
+
+function isParentPath(rootPath: string, filePath: string) {
+  const fullPath = resolve(rootPath, filePath)
+  const relativePath = relative(rootPath, fullPath)
+
+  return relativePath.startsWith('..')
 }
 
 export default function uploader(options: Options): AstroIntegration {
@@ -172,7 +179,7 @@ export default function uploader(options: Options): AstroIntegration {
         const client = await createClient({ region, endpoint, bucket, accessKey, secretAccessKey, logger })
         const uploadPaths = paths.map((path) => {
           if (typeof path === 'string') {
-            if (path.startsWith('..')) {
+            if (isParentPath(dir.pathname, path)) {
               throw new Error(`It's not allowed to upload the parent directories. Only child directories.`)
             }
             return {
@@ -184,7 +191,7 @@ export default function uploader(options: Options): AstroIntegration {
             }
           }
           else {
-            if (path.path.startsWith('..')) {
+            if (isParentPath(dir.pathname, path.path)) {
               throw new Error(`It's not allowed to upload the parent directories. Only child directories.`)
             }
             return {
