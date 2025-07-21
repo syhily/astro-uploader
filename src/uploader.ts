@@ -88,11 +88,12 @@ async function uploadFiles({
 }): Promise<void> {
   for (const { rootPath, filePath, recursive, keep, override } of paths) {
     await walk(rootPath, filePath, { recursive }, async (relative, files) => {
+      const results = files.map(file => ({ sourcePath: file.path, targetPath: normalizePath(join(bucketRoot, relative, file.name)) }))
+
       // Upload all the files if the override option is enabled.
       if (override) {
-        const results = files.map(file => ({ sourcePath: file.path, targetPath: normalizePath(join(bucketRoot, relative, file.name)) }))
         await Promise.all(results.map(async (result) => {
-          logger.info(`Start to upload file: ${result.targetPath}`)
+          logger.info(`Start to override file: ${result.targetPath}`)
           const contentType = mime.getType(result.targetPath)
           const putCmd = new PutObjectCommand({
             Bucket: bucket,
@@ -114,28 +115,29 @@ async function uploadFiles({
           : new Map(response.Contents.filter(o => o.Key !== undefined).map(o => [o.Key, o]))
 
         // Find the files to upload.
-        await Promise.all(files.filter(async (file) => {
-          const object = objects.get(file.name)
-          if (object !== undefined) {
-            const meta = await stat(file.path)
-            if (meta.size === object.Size) {
-              return false
+        await Promise.all(results
+          .filter(async (result) => {
+            const object = objects.get(result.targetPath)
+            if (object !== undefined) {
+              const meta = await stat(result.sourcePath)
+              if (meta.size === object.Size) {
+                return false
+              }
             }
-          }
-          return true
-        })
-          .map(async (file) => {
-            const targetPath = normalizePath(join(bucketRoot, relative, file.name))
-            logger.info(`Start to upload file: ${targetPath}`)
-            const contentType = mime.getType(targetPath)
+            return true
+          })
+          .map(async (result) => {
+            logger.info(`The file doesn't exist on target. Start to upload file: ${result.targetPath}`)
+            const contentType = mime.getType(result.targetPath)
             const putCmd = new PutObjectCommand({
               Bucket: bucket,
-              Key: targetPath,
-              Body: await readFile(file.path),
+              Key: result.targetPath,
+              Body: await readFile(result.sourcePath),
               ContentType: contentType === null ? undefined : contentType,
             })
             await client.send(putCmd)
-          }))
+          }),
+        )
       }
 
       // Start to delete the files, in this method. We may not delete the directory.
@@ -159,10 +161,7 @@ async function uploadFiles({
 }
 
 function isParentPath(rootPath: string, filePath: string) {
-  const fullPath = resolve(rootPath, filePath)
-  const relativePath = relative(rootPath, fullPath)
-
-  return relativePath.startsWith('..')
+  return relative(rootPath, resolve(rootPath, filePath)).startsWith('..')
 }
 
 export default function uploader(options: Options): AstroIntegration {
